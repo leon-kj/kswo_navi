@@ -1,0 +1,79 @@
+@import "node_modules/ol/ol.css";
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+.locate {
+  top: 6em;
+  left: .5em;
+}
+.overlay-control {
+  top: 9em;
+  left: .5em;
+}
+.overlay-control .level1button,
+.overlay-control .level0button,
+.overlay-control .levelm1button {
+  position: relative;
+  z-index: 1;
+}
+.overlay-control .level1button {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.overlay-control .level0button {
+  border-radius: 0 0 0 0;
+}
+.overlay-control .levelm1button {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.overlay-control .active-button {
+  background-color: lightgrey;
+  box-shadow: 0 0 0 2px rgb(20, 20, 20, 1);
+  border-radius: 1.5px;
+  border-width: 1px;
+  border-color: rgb(20, 20, 20, 1);
+  border-style: solid;
+  z-index: 2;
+  color: black;
+}
+
+/* Search */
+.search-control {
+  position: absolute;
+  top: 1em;
+  right: .5em;
+  display: flex;
+  align-items: center;
+}
+.search-control input {
+  display: block;
+  margin: 1px;
+  margin-right: 0px;
+  padding: 0;
+  padding-left: 0.2em;
+  color: var(--ol-subtle-foreground-color);
+  font-weight: bold;
+  text-decoration: none;
+  font-size: inherit;
+  text-align: left;
+  height: 1.375em;
+  width: auto;
+  line-height: .4em;
+  background-color: var(--ol-background-color);
+  border: none;
+  border-radius: 2px 0 0 2px;
+}
+.search-control button {
+  height: 1.375em;
+  border-radius: 0 2px 2px 0;
+  padding: 0;
+}

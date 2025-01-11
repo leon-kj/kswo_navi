@@ -1,0 +1,21 @@
+{
+  "name": "kswo_navi",
+  "version": "0.5.1",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.0.3",
+    "vite-plugin-mkcert": "^1.17.6"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "kompas": "^0.0.2",
+    "ol": "latest",
+    "pg": "^8.13.1"
+  }
+}

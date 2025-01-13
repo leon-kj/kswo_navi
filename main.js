@@ -16,6 +16,7 @@ import {circular} from 'ol/geom/Polygon';
 import {Control, defaults as defaultControls} from 'ol/control.js';
 import XYZ from 'ol/source/XYZ';
 import KSWO_EG from './images/KSWO 01 KSWO_EG.svg';
+import KSWO_OG from './images/KSWO 02 KSWO_OG.svg';
 
 
 //
@@ -29,6 +30,7 @@ const map = new Map({
     new TileLayer({
       source: new XYZ({
         url: 'https://api.maptiler.com/maps/ch-swisstopo-lbm-dark/{z}/{x}/{y}.png?key=nvq0pz6dEivNRJmSl3lD',
+        //url: 'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe.wmts/default/current/3857/{z}/{x}/{y}.png',
         crossOrigin: 'anonymous',
         attributions: '© <a href="https://www.swisstopo.admin.ch" target="_blank">swisstopo</a>  © MapTiler  © OpenStreetMap contributors'
       })
@@ -62,7 +64,7 @@ const customImageOverlay1 = new ImageLayer({
 
 const customImageOverlay2 = new ImageLayer({
   source: new ImageStatic({
-    url: '/images/DSC_5534.jpg',
+    url: KSWO_OG,
     imageExtent: imageExtent
   })
 });

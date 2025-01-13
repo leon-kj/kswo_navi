@@ -1,3 +1,4 @@
 # KSWO Navi
-Start the VITE Frontend server with `npm start` for a dev server.
-Start the backend with `node server/server.js`.
+## Starting the application
+Start the VITE frontend server with `npm start` for a dev server. The server should be available under [https://localhost:5173](https://localhost:5173).  
+Start the backend with `node server/server.js`.  

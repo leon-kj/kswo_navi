@@ -7,7 +7,7 @@ const router = express.Router();
 // Routes
 router.get('/api/rooms', async (req, res) => { // Get all rooms
     try {
-        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type FROM rooms');
+        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher FROM rooms');
         res.json(result.rows);
     } catch (err) {
         console.error(err.message);
@@ -17,7 +17,7 @@ router.get('/api/rooms', async (req, res) => { // Get all rooms
 router.get('/api/rooms/:name', async (req, res) => { // Get room by name
     try {
         const { name } = req.params;
-        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type FROM rooms WHERE name = $1 OR UPPER(type) = $1', [name]);
+        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher FROM rooms WHERE name = $1 OR UPPER(type) = $1', [name]);
         res.json(result.rows[0]);
     } catch (err) {
         console.error(err.message);
@@ -27,7 +27,7 @@ router.get('/api/rooms/:name', async (req, res) => { // Get room by name
 router.get('/api/rooms/floor/:floor', async (req, res) => { // Get rooms by floor
     try {
         const { floor } = req.params;
-        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type FROM rooms WHERE floor = $1', [floor]);
+        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher FROM rooms WHERE floor = $1', [floor]);
         res.json(result.rows);
     } catch (err) {
         console.error(err.message);
@@ -39,7 +39,7 @@ router.get('/api/nearest-room', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type
+      `SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher
        FROM rooms
        WHERE floor = $1
        AND ST_DWithin(geom::geography, ST_SetSRID(ST_MakePoint($2, $3), 4326)::geography, 10)

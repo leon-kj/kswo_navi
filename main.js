@@ -320,24 +320,27 @@ map.on('click', function (event) {
 });
 
 
+//
 // Room Overlay
 const roomOverlayElement = document.createElement('div');
 roomOverlayElement.id = 'room-overlay';
-roomOverlayElement.style.position = 'absolute';
-roomOverlayElement.style.backgroundColor = 'rgb(39, 39, 39)';
-roomOverlayElement.style.border = '1px solid rgb(132, 132, 132)';
-roomOverlayElement.style.borderRadius = '5px';
-roomOverlayElement.style.padding = '0.2em';
-roomOverlayElement.style.fontSize = '1.2em';
-roomOverlayElement.style.color = 'white';
-roomOverlayElement.style.boxShadow = '0 2px 5px rgba(132, 132, 132, 0.3)';
 roomOverlayElement.style.pointerEvents = 'none';
+const roomOverlayHeader = document.createElement('h3');
+roomOverlayHeader.className = 'room-overlay-header';
+roomOverlayElement.appendChild(roomOverlayHeader);
+const roomOverlayType = document.createElement('p');
+roomOverlayType.className = 'room-overlay-type';
+roomOverlayElement.appendChild(roomOverlayType);
+const roomOverlayTeacher = document.createElement('p');
+roomOverlayTeacher.className = 'room-overlay-teacher';
+roomOverlayElement.appendChild(roomOverlayTeacher);
+
 document.body.appendChild(roomOverlayElement);
 
 const roomOverlay = new Overlay({
   element: document.getElementById('room-overlay'),
   positioning: 'top-center',
-  offset: [-30, 10],
+  offset: [-125, 10],
 })
 map.addOverlay(roomOverlay);
 
@@ -371,16 +374,21 @@ function highlightRoom(room) {
   // Add the feature to the vector source
   roomSource.addFeature(feature);
   
-  
-  roomOverlayElement.innerHTML = `
-    <strong style="fontSize: 1.3em; text-decoration: underline">${room.name}</strong><br>
-    ${room.type}
-  `;
+  roomOverlayHeader.innerHTML = room.name;
+  roomOverlayType.innerHTML = room.type;
+  roomOverlayTeacher.innerHTML = '';
+  if (room.teacher) {
+    roomOverlayTeacher.innerHTML = 'Lehrer:';
+    const roomOverlayTeacherList = document.createElement('ul');
+    roomOverlayTeacher.appendChild(roomOverlayTeacherList);
+    room.teacher.forEach(element => {
+      roomOverlayTeacherList.innerHTML += `<li>${element}</li>`;
+    });
+  }
 
   // Set the overlay position
   roomOverlay.setPosition(fromLonLat(roomCoordinates));
 }
-
 
 
 

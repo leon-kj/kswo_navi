@@ -2,7 +2,7 @@ const { Pool } = require('pg'); // Import the 'pg' module
 const fs = require('fs'); // Import the 'fs' module for reading files
 
 // Read the password from the file
-const password = fs.readFileSync('server/password.txt', 'utf8');
+const password = fs.readFileSync('./password.txt', 'utf8');
 
 
 const pool = new Pool({

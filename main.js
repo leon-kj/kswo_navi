@@ -17,6 +17,8 @@ import {Control, defaults as defaultControls} from 'ol/control.js';
 import XYZ from 'ol/source/XYZ';
 import KSWO_EG from './images/KSWO 01 KSWO_EG.svg';
 import KSWO_OG from './images/KSWO 02 KSWO_OG.svg';
+import KSWO_UG from './images/DSC_5757.jpg';
+import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 
 
 //
@@ -71,7 +73,7 @@ const customImageOverlay2 = new ImageLayer({
 
 const customImageOverlay3 = new ImageLayer({
   source: new ImageStatic({
-    url: '/images/DSC_5757.jpg',
+    url: KSWO_UG,
     imageExtent: imageExtent
   })
 });
@@ -253,6 +255,31 @@ class SearchControl extends Control {
 }
 const searchControl = new SearchControl(overlayControl);
 map.addControl(searchControl);
+
+
+//
+// MapTiler Logo
+class MapTilerLogo extends Control {
+  constructor() {
+    const element = document.createElement('div');
+    element.className = 'maptiler-logo';
+
+    const image = document.createElement('img');
+    image.src = maptilerlogo;
+    image.alt = 'MapTiler logo';
+    element.appendChild(image);
+
+    image.addEventListener('click', () => {
+      window.open('https://www.maptiler.com/', '_blank');
+    });
+
+    super({
+      element: element
+    });
+  }
+}
+const mapTilerLogo = new MapTilerLogo();
+map.addControl(mapTilerLogo);
 
 
 

@@ -21,7 +21,7 @@ router.get('/api/rooms/:name', async (req, res) => { // Get room by name
           SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher 
           FROM rooms 
           WHERE name LIKE $1 OR UPPER(type) LIKE $1`,
-           [`%${name}%`]
+           [`%${name.toUpperCase()}%`]
           );
 
         res.json(result.rows);

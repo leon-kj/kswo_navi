@@ -170,6 +170,32 @@ class OverlayControl extends Control {
 const overlayControl = new OverlayControl();
 map.addControl(overlayControl);
 
+
+//
+// MapTiler Logo
+class MapTilerLogo extends Control {
+  constructor() {
+    const element = document.createElement('div');
+    element.className = 'maptiler-logo';
+
+    const image = document.createElement('img');
+    image.src = maptilerlogo;
+    image.alt = 'MapTiler logo';
+    element.appendChild(image);
+
+    image.addEventListener('click', () => {
+      window.open('https://www.maptiler.com/', '_blank');
+    });
+
+    super({
+      element: element
+    });
+  }
+}
+const mapTilerLogo = new MapTilerLogo();
+map.addControl(mapTilerLogo);
+
+
 // Create a vector source and layer for the room
 const roomSource = new VectorSource();
 const roomLayer = new VectorLayer({
@@ -197,16 +223,47 @@ class SearchControl extends Control {
     map.addLayer(roomLayer);
 
     // TODO: Add support for searching multiple rooms
+    // TODO: Cleanups
     // Function to handle search
     const handleSearch = () => {
       const searchValue = searchInput.value.toUpperCase();
       if (searchValue) {
         fetch(`/api/rooms/${searchValue}`)
           .then(response => response.json())
-          .then(room => {
-            if (room.geom) {
-              const coordinates = JSON.parse(room.geom).coordinates;
-              const floor = room.floor;
+          .then(rooms => {
+            console.log('Rooms:', rooms);
+            if (rooms.length === 1) {
+              const room = rooms[0];
+              if (room.geom) {
+                const coordinates = JSON.parse(rooms[0].geom).coordinates;
+                const floor = room.floor;
+                if (floor) {
+                  switch (floor) {
+                    case 0:
+                      overlayControl.levelChangeHandler(1);
+                      break;
+                    case 1:
+                      overlayControl.levelChangeHandler(2);
+                      break;
+                    case -1:
+                      overlayControl.levelChangeHandler(0);
+                      break;
+                    default:
+                      alert('Floor not found.');
+                      break;
+                  }
+                }
+                map.getView().setCenter(fromLonLat(coordinates));
+                map.getView().setZoom(20);
+                
+                highlightRoom(room); // Highlicht the room
+
+              } else {
+                alert(`Room "${searchValue}" not found.`);
+              }
+            } else if (rooms.length > 1) {
+              // TODO: Handle multiple floors (or ALERT)
+              const floor = rooms[0].floor;
               if (floor) {
                 switch (floor) {
                   case 0:
@@ -223,12 +280,7 @@ class SearchControl extends Control {
                     break;
                 }
               }
-              map.getView().setCenter(fromLonLat(coordinates));
-              map.getView().setZoom(20);
-              
-              roomSource.clear(); // Clear existing features
-              highlightRoom(room); // Highlicht the room
-
+              highlightRooms(rooms); // Highlight multiple rooms
             } else {
               alert(`Room "${searchValue}" not found.`);
             }
@@ -256,31 +308,6 @@ class SearchControl extends Control {
 }
 const searchControl = new SearchControl(overlayControl);
 map.addControl(searchControl);
-
-
-//
-// MapTiler Logo
-class MapTilerLogo extends Control {
-  constructor() {
-    const element = document.createElement('div');
-    element.className = 'maptiler-logo';
-
-    const image = document.createElement('img');
-    image.src = maptilerlogo;
-    image.alt = 'MapTiler logo';
-    element.appendChild(image);
-
-    image.addEventListener('click', () => {
-      window.open('https://www.maptiler.com/', '_blank');
-    });
-
-    super({
-      element: element
-    });
-  }
-}
-const mapTilerLogo = new MapTilerLogo();
-map.addControl(mapTilerLogo);
 
 
 
@@ -346,7 +373,7 @@ const roomOverlay = new Overlay({
 map.addOverlay(roomOverlay);
 
 
-// Highlight room
+// Highlight one room
 function highlightRoom(room) {
   const roomCoordinates = JSON.parse(room.geom).coordinates;
 
@@ -358,6 +385,7 @@ function highlightRoom(room) {
     geometry: new Point(fromLonLat(roomCoordinates)),
     name: room.name,
     type: room.type,
+    teacher: room.teacher,
     metadata: room.metadata,
   });
 
@@ -389,6 +417,41 @@ function highlightRoom(room) {
 
   // Set the overlay position
   roomOverlay.setPosition(fromLonLat(roomCoordinates));
+}
+
+// Highlight multiple rooms
+function highlightRooms(rooms) {
+  // Clear any existing room highlights
+  roomSource.clear();
+  
+  // Clear the room overlay
+  roomOverlay.setPosition(undefined);
+
+  // Create a new feature for each room
+  rooms.forEach(room => {
+    const roomCoordinates = JSON.parse(room.geom).coordinates;
+    const feature = new Feature({
+      geometry: new Point(fromLonLat(roomCoordinates)),
+      name: room.name,
+      type: room.type,
+      teacher: room.teacher,
+      metadata: room.metadata,
+    });
+
+    // Apply a highlight style
+    feature.setStyle(
+      new Style({
+        image: new Circle({
+          radius: 8,
+          fill: new Fill({ color: 'yellow' }),
+          stroke: new Stroke({ color: 'black', width: 2 }),
+        }),
+      })
+    );
+
+    // Add the feature to the vector source
+    roomSource.addFeature(feature);
+  });
 }
 
 

@@ -196,6 +196,7 @@ class SearchControl extends Control {
     // Add the vector layer to the map
     map.addLayer(roomLayer);
 
+    // TODO: Add support for searching multiple rooms
     // Function to handle search
     const handleSearch = () => {
       const searchValue = searchInput.value.toUpperCase();

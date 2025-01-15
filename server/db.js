@@ -6,7 +6,7 @@ const password = fs.readFileSync('./password.txt', 'utf8');
 
 
 const pool = new Pool({
-    user: 'postgres',            
+    user: 'readonly_user',            
     host: 'localhost',           
     database: 'kswo_navi_rooms',     
     password: password,   

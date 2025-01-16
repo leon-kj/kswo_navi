@@ -231,7 +231,23 @@ class SearchControl extends Control {
     // Add the vector layer to the map
     map.addLayer(roomLayer);
 
-    
+    // FUNCTIONS
+    // TODO
+    // Function for search proposals
+    const searchProposals = () => {
+      const searchValue = searchInput.value.toUpperCase();
+      if (searchValue) {
+        fetch(`/api/rooms/search/${searchValue}`)
+          .then(response => response.json())
+          .then(proposals => {
+            // TODO: Display search proposals
+            console.log(proposals);
+          })
+          .catch(error => {
+            console.error('Error fetching search proposals:', error);
+          });
+      }
+    };
     // TODO: Cleanups
     // Function to handle search
     const handleSearch = () => {
@@ -328,7 +344,15 @@ class SearchControl extends Control {
       clearButton.style.display = 'none';
       searchInput.focus(); // Focus on the input field
     });
-      
+    
+    // Search proposals
+    let debounceTimer;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        searchProposals();
+      }, 300); // Delay by 300ms
+    });
 
     super({
       element: container

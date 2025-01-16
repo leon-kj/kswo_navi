@@ -211,7 +211,6 @@ class SearchControl extends Control {
 
     const searchInput = document.createElement('input');
     searchInput.id = 'search-input';
-    searchInput.type = 'search';
     searchInput.name = 'search';
     searchInput.placeholder = 'Suche...';
     searchInput.enterKeyHint = 'search';
@@ -221,6 +220,13 @@ class SearchControl extends Control {
     searchInput.inputMode = 'text';
     searchInput.autofocus = false;
     container.appendChild(searchInput);
+
+    const clearButton = document.createElement('button');
+    clearButton.id = 'clear-button';
+    clearButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    clearButton.title = 'Clear search';
+    clearButton.type = 'button';
+    container.appendChild(clearButton);
 
     // Add the vector layer to the map
     map.addLayer(roomLayer);
@@ -311,6 +317,18 @@ class SearchControl extends Control {
       roomSource.clear(); // Clear any existing room highlights
       roomOverlay.setPosition(undefined); // Clear the room overlay
     });
+    searchInput.addEventListener('input', () => {
+      clearButton.style.display = searchInput.value ? 'block' : 'none';
+    });
+    clearButton.addEventListener('mousedown', (event) => {
+      event.preventDefault(); // Prevent the default action
+    });
+    clearButton.addEventListener('click', () => {
+      searchInput.value = '';
+      clearButton.style.display = 'none';
+      searchInput.focus(); // Focus on the input field
+    });
+      
 
     super({
       element: container
@@ -331,7 +349,10 @@ map.addControl(searchControl);
 // On Map Click Event
 map.on('click', function (event) {
   const searchInput = document.getElementById('search-input');
-  searchInput.blur(); // Remove focus from the input field
+  if (document.activeElement === searchInput) {
+    searchInput.blur(); // Remove focus from the input 
+    return;
+  }
 
   const clickCoord = toLonLat(event.coordinate);
   console.log('Click coordinates:', clickCoord);

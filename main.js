@@ -210,14 +210,17 @@ class SearchControl extends Control {
     container.className = 'ol-control ol-unselectable search-control';
 
     const searchInput = document.createElement('input');
+    searchInput.id = 'search-input';
     searchInput.type = 'search';
     searchInput.name = 'search';
     searchInput.placeholder = 'Suche...';
+    searchInput.enterKeyHint = 'search';
+    searchInput.autocomplete = 'off';
+    searchInput.spellcheck = false;
+    searchInput.autocorrect = 'off';
+    searchInput.inputMode = 'text';
+    searchInput.autofocus = false;
     container.appendChild(searchInput);
-
-    const searchButton = document.createElement('button');
-    searchButton.innerHTML = '<i class="fa-solid fa-search"></i>';
-    container.appendChild(searchButton);
 
     // Add the vector layer to the map
     map.addLayer(roomLayer);
@@ -296,11 +299,17 @@ class SearchControl extends Control {
       }
     };
 
-    searchButton.addEventListener('click', handleSearch);
+    // Eventlisteners
     searchInput.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent the default action
+        searchInput.blur(); // Remove focus from the input field
         handleSearch();
       }
+    });
+    searchInput.addEventListener('focusin', () => {
+      roomSource.clear(); // Clear any existing room highlights
+      roomOverlay.setPosition(undefined); // Clear the room overlay
     });
 
     super({
@@ -321,6 +330,9 @@ map.addControl(searchControl);
 //
 // On Map Click Event
 map.on('click', function (event) {
+  const searchInput = document.getElementById('search-input');
+  searchInput.blur(); // Remove focus from the input field
+
   const clickCoord = toLonLat(event.coordinate);
   console.log('Click coordinates:', clickCoord);
   const [lon, lat] = clickCoord;

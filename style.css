@@ -58,7 +58,7 @@ html, body {
 /* Search */
 .search-control {
   position: absolute;
-  top: 1em;
+  top: 0.5em;
   right: .5em;
   display: flex;
   align-items: center;
@@ -68,23 +68,36 @@ html, body {
   margin: 1px;
   margin-right: 0px;
   padding: 0;
-  padding-left: 0.2em;
+  padding-left: 0.3em;
   color: var(--ol-subtle-foreground-color);
   font-weight: bold;
   text-decoration: none;
   font-size: inherit;
   text-align: left;
-  height: 1.375em;
-  width: auto;
+  height: 1.5em;
+  width: 13em;
   line-height: .4em;
   background-color: var(--ol-background-color);
   border: none;
-  border-radius: 2px 0 0 2px;
+  border-radius: 2px;
+  transition: height 0.3s, width 0.8s;
 }
-.search-control button {
-  height: 1.375em;
-  border-radius: 0 2px 2px 0;
-  padding: 0;
+.search-control input:focus {
+  height: 2em;
+  width: 20em;
+  transition: all 0.3s ease;
+}
+@media screen and (max-width: 600px) {
+  .search-control input:focus {
+    height: 2.5em;
+    width: 80vw;
+    transition: all 0.3s ease;
+  }
+  .search-control input {
+    height: 2em;
+    width: 45vw;
+    transition: height 0.3s, width 0.8s;
+  }
 }
 
 /* MapTiler Logo */

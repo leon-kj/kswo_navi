@@ -222,7 +222,7 @@ class SearchControl extends Control {
     // Add the vector layer to the map
     map.addLayer(roomLayer);
 
-    // TODO: Add support for searching multiple rooms
+    
     // TODO: Cleanups
     // Function to handle search
     const handleSearch = () => {
@@ -231,7 +231,6 @@ class SearchControl extends Control {
         fetch(`/api/rooms/${searchValue}`)
           .then(response => response.json())
           .then(rooms => {
-            console.log('Rooms:', rooms);
             if (rooms.length === 1) {
               const room = rooms[0];
               if (room.geom) {
@@ -262,7 +261,6 @@ class SearchControl extends Control {
                 alert(`Room "${searchValue}" not found.`);
               }
             } else if (rooms.length > 1) {
-              // TODO: Handle multiple floors (or ALERT)
               const floor = rooms[0].floor;
               if (floor) {
                 switch (floor) {
@@ -280,7 +278,11 @@ class SearchControl extends Control {
                     break;
                 }
               }
-              highlightRooms(rooms); // Highlight multiple rooms
+              const roomsFiltered = rooms.filter(room => room.floor === floor);
+              if (JSON.stringify(roomsFiltered) !== JSON.stringify(rooms)) {
+                alert('Rooms are on different floors. Showing rooms on Floor ' + floor);
+              }
+              highlightRooms(roomsFiltered); // Highlight multiple rooms
             } else {
               alert(`Room "${searchValue}" not found.`);
             }

@@ -24,6 +24,12 @@ import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 //
 // BASE MAP
 //
+const view = new View({
+  center: fromLonLat([8.2697343, 47.3558335]),
+  zoom: 18,
+  maxZoom: 22
+  //extent: []
+})
 
 const map = new Map({
   target: 'map',
@@ -38,12 +44,7 @@ const map = new Map({
       })
     })
   ],
-  view: new View({
-    center: fromLonLat([8.2697343, 47.3558335]),
-    zoom: 18,
-    maxZoom: 22
-    //extent: []
-  })
+  view: view,
 });
 
 
@@ -261,9 +262,6 @@ class SearchControl extends Control {
                       break;
                   }
                 }
-                map.getView().setCenter(fromLonLat(coordinates));
-                map.getView().setZoom(20);
-                
                 highlightRoom(room); // Highlicht the room
 
               } else {
@@ -360,6 +358,7 @@ map.on('click', function (event) {
 
   const currentFloor = overlayControl.getVisibleOverlay() - 1;
 
+  // Fetch the nearest room
   fetch(`/api/nearest-room?floor=${currentFloor}&lon=${lon}&lat=${lat}`)
     .then(response => {
       if (!response.ok){
@@ -452,6 +451,13 @@ function highlightRoom(room) {
 
   // Set the overlay position
   roomOverlay.setPosition(fromLonLat(roomCoordinates));
+
+  // Center the map on the room
+  view.animate({
+    center: fromLonLat(roomCoordinates),
+    duration: 800,
+    zoom: 20,
+  });
 }
 
 // Highlight multiple rooms

@@ -449,15 +449,18 @@ function highlightRoom(room) {
     });
   }
 
-  // Set the overlay position
-  roomOverlay.setPosition(fromLonLat(roomCoordinates));
-
   // Center the map on the room
   view.animate({
     center: fromLonLat(roomCoordinates),
     duration: 800,
     zoom: 20,
+  },
+  () => { // After the animation
+    
+  // Set the overlay position
+  roomOverlay.setPosition(fromLonLat(roomCoordinates));
   });
+
 }
 
 // Highlight multiple rooms
@@ -492,6 +495,13 @@ function highlightRooms(rooms) {
 
     // Add the feature to the vector source
     roomSource.addFeature(feature);
+
+    // Animate the map center on school
+    view.animate({
+      center: fromLonLat([8.2697343, 47.3558335]),
+      zoom: 18,
+      duration: 800,
+    })
   });
 }
 

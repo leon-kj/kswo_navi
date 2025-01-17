@@ -210,6 +210,7 @@ class SearchControl extends Control {
     const container = document.createElement('div');
     container.className = 'ol-control ol-unselectable search-control';
 
+    // Search input
     const searchInput = document.createElement('input');
     searchInput.id = 'search-input';
     searchInput.name = 'search';
@@ -222,6 +223,7 @@ class SearchControl extends Control {
     searchInput.autofocus = false;
     container.appendChild(searchInput);
 
+    // Clear button
     const clearButton = document.createElement('button');
     clearButton.id = 'clear-button';
     clearButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -229,26 +231,53 @@ class SearchControl extends Control {
     clearButton.type = 'button';
     container.appendChild(clearButton);
 
+    // Search proposals div
+    const searchProposalsdiv = document.createElement('div');
+    searchProposalsdiv.className = 'search-proposals';
+    container.appendChild(searchProposalsdiv);
+
     // Add the vector layer to the map
     map.addLayer(roomLayer);
 
     // FUNCTIONS
     // TODO
     // Function for search proposals
-    const searchProposals = () => {
+    const fetchProposals = () => {
       const searchValue = searchInput.value.toUpperCase();
       if (searchValue) {
         fetch(`/api/rooms/search/${searchValue}`)
           .then(response => response.json())
           .then(proposals => {
-            // TODO: Display search proposals
+            // TODO: NEEDS FIXING!!!!!!!!
             console.log(proposals);
+            searchProposalsdiv.innerHTML = ''; // Clear the search proposals
+
+            if (proposals.length === 0) {
+              searchProposalsdiv.style.display = 'none'; // Hide box if no proposals
+              return;
+            }
+
+            searchProposalsdiv.style.display = 'block'; // Show box if proposals
+
+            // TODO: NEEDS FIXING!!!!!!!!
+            proposals.forEach(proposal => {
+              const item = document.createElement('div');
+              item.className = 'proposal-item';
+              item.textContent = proposal.name; // Display the room name
+              item.addEventListener('click', () => {
+                searchInput.value = proposal.name; // Set search input value
+                searchProposalsdiv.style.display = 'none'; // Hide suggestions
+                handleSearch(proposal.name); // Handle the search
+              });
+              searchProposalsdiv.appendChild(item);
+            });
           })
           .catch(error => {
             console.error('Error fetching search proposals:', error);
           });
       }
     };
+
     // TODO: Cleanups
     // Function to handle search
     const handleSearch = () => {
@@ -330,6 +359,15 @@ class SearchControl extends Control {
     searchInput.addEventListener('focusin', () => {
       roomSource.clear(); // Clear any existing room highlights
       roomOverlay.setPosition(undefined); // Clear the room overlay
+      if (searchInput.value) {
+        searchProposalsdiv.style.display = 'block'; // Show search proposals
+      }
+    });
+    searchInput.addEventListener('blur', () => {
+      setTimeout(() => {
+        searchProposalsdiv.style.display = 'none'; // Hide search proposals
+      }, 300);
+      
     });
     searchInput.addEventListener('input', () => {
       clearButton.style.display = searchInput.value ? 'block' : 'none';
@@ -347,8 +385,14 @@ class SearchControl extends Control {
     let debounceTimer;
     searchInput.addEventListener('input', () => {
       clearTimeout(debounceTimer);
+      if (searchInput.value.length === 0) {
+        console.log('Search input empty.');
+        searchProposalsdiv.style.display = 'none';
+        return;
+      }
+
       debounceTimer = setTimeout(() => {
-        searchProposals();
+        fetchProposals();
       }, 300); // Delay by 300ms
     });
 

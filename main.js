@@ -17,7 +17,7 @@ import {Control, defaults as defaultControls} from 'ol/control.js';
 import XYZ from 'ol/source/XYZ';
 import KSWO_EG from './images/KSWO 01 KSWO_EG.svg';
 import KSWO_OG from './images/KSWO 02 KSWO_OG.svg';
-import KSWO_UG from './images/DSC_5757.jpg';
+import KSWO_UG from './images/KSWO 03 KSWO_UG.svg';
 import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 
 

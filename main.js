@@ -437,17 +437,6 @@ function highlightRoom(room) {
   // Add the feature to the vector source
   roomSource.addFeature(feature);
   
-  roomOverlayHeader.innerHTML = room.name;
-  roomOverlayType.innerHTML = room.type;
-  roomOverlayTeacher.innerHTML = '';
-  if (room.teacher) {
-    roomOverlayTeacher.innerHTML = 'Lehrer:';
-    const roomOverlayTeacherList = document.createElement('ul');
-    roomOverlayTeacher.appendChild(roomOverlayTeacherList);
-    room.teacher.forEach(element => {
-      roomOverlayTeacherList.innerHTML += `<li>${element}</li>`;
-    });
-  }
 
   // Center the map on the room
   view.animate({
@@ -456,9 +445,19 @@ function highlightRoom(room) {
     zoom: 20,
   },
   () => { // After the animation
-    
-  // Set the overlay position
-  roomOverlay.setPosition(fromLonLat(roomCoordinates));
+    roomOverlayHeader.innerHTML = room.name;
+    roomOverlayType.innerHTML = room.type;
+    roomOverlayTeacher.innerHTML = '';
+    if (room.teacher) {
+      roomOverlayTeacher.innerHTML = 'Lehrer:';
+      const roomOverlayTeacherList = document.createElement('ul');
+      roomOverlayTeacher.appendChild(roomOverlayTeacherList);
+      room.teacher.forEach(element => {
+        roomOverlayTeacherList.innerHTML += `<li>${element}</li>`;
+      });
+    }
+    // Set the overlay position
+    roomOverlay.setPosition(fromLonLat(roomCoordinates));
   });
 
 }

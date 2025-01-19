@@ -21,6 +21,7 @@ import KSWO_UG from './images/KSWO 03 KSWO_UG.svg';
 import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 
 
+
 //
 // BASE MAP
 //
@@ -248,8 +249,6 @@ class SearchControl extends Control {
         fetch(`/api/rooms/search/${searchValue}`)
           .then(response => response.json())
           .then(proposals => {
-            // TODO: NEEDS FIXING!!!!!!!!
-            console.log(proposals);
             searchProposalsdiv.innerHTML = ''; // Clear the search proposals
 
             if (proposals.length === 0) {
@@ -259,16 +258,20 @@ class SearchControl extends Control {
 
             searchProposalsdiv.style.display = 'block'; // Show box if proposals
 
-            // TODO: NEEDS FIXING!!!!!!!!
             proposals.forEach(proposal => {
               const item = document.createElement('div');
               item.className = 'proposal-item';
-              item.textContent = proposal.name; // Display the room name
-              item.addEventListener('click', () => {
+              item.textContent = `${proposal.name}, ${proposal.type}`; // Display the room name
+              item.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent the default action
                 searchInput.value = proposal.name; // Set search input value
                 searchProposalsdiv.style.display = 'none'; // Hide suggestions
+                searchInput.blur(); // Remove focus from the input field
                 idSearch(proposal.id); // Handle the search
               });
+              item.addEventListener('mousedown', (event) => {
+                event.preventDefault(); // Prevent the default action
+              }); 
               searchProposalsdiv.appendChild(item);
             });
           })
@@ -278,7 +281,7 @@ class SearchControl extends Control {
       }
     };
     const idSearch = (id) => {
-      fetch(`/api/rooms/${id}`)
+      fetch(`/api/rooms/id/${id}`)
         .then(response => response.json())
         .then(room => {
           if (room.geom) {

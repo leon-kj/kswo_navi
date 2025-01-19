@@ -81,6 +81,7 @@ html, body {
   border: none;
   border-radius: 2px;
   transition: height 0.3s, width 0.8s;
+  z-index: 1;
 }
 .search-control input:focus {
   height: 2em;
@@ -107,6 +108,7 @@ html, body {
   background-color: none;
   border: none;
   border-radius: 2px;
+  z-index: 1;
 }
 .search-control button:hover {
   outline: none;
@@ -141,9 +143,19 @@ html, body {
   max-height: 30vh;
   overflow-y: auto;
   background-color: var(--ol-background-color);
+  color: rgb(65, 65, 65);
+  font-weight: 900;
+  font-size: normal;
+  text-align: left;
   border: none;
   border-radius: 0 0 2px 2px;
   transition: height 0.3s;
+  z-index: 0;
+}
+@media screen and (max-width: 600px) {
+  .search-proposals {
+    font-size: 1.07em;
+  }
 }
 
 .proposal-item {
@@ -151,7 +163,7 @@ html, body {
   cursor: pointer;
 }
 .proposal-item:hover {
-  background-color: var(--ol-hover-background-color);
+  background-color: lightgrey;
 }
 
 .ol-rotate { /* Preventing interference with searchbar */

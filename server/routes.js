@@ -18,11 +18,20 @@ router.get('/api/rooms/search/:query', async (req, res) => { // Search proposals
     try {
         const { query } = req.params;
         const result = await pool.query(`
-          SELECT id, name, type
-          FROM rooms 
-          WHERE name LIKE $1 OR UPPER(type) LIKE $1
-          ORDER BY name`,
-           [`%${query.toUpperCase()}%`]
+          SELECT id, name, type,
+          CASE
+              WHEN UPPER(name) = $1 THEN 1               -- Exact match in name
+              WHEN UPPER(type) = $1 THEN 2               -- Exact match in type
+              WHEN POSITION(UPPER($1) IN UPPER(name)) = 1 THEN 3 -- Starts with in name
+              WHEN POSITION(UPPER($1) IN UPPER(type)) = 1 THEN 4 -- Starts with in type
+              WHEN UPPER(name) LIKE $2 THEN 5           -- Partial match in name
+              WHEN UPPER(type) LIKE $2 THEN 6           -- Partial match in type
+              ELSE 7                                    -- Fallback for other cases
+            END AS relevance
+          FROM rooms
+          WHERE UPPER(name) LIKE $2 OR UPPER(type) LIKE $2
+          ORDER BY relevance, name, type;`,
+           [query.toUpperCase(), `%${query.toUpperCase()}%`]
           );
         res.json(result.rows);
     } catch (err) { 
@@ -30,7 +39,7 @@ router.get('/api/rooms/search/:query', async (req, res) => { // Search proposals
         res.status(500).send('Server Error');
     }
 });  
-router.get('/api/rooms/:id', async (req, res) => { // Get room by id
+router.get('/api/rooms/id/:id', async (req, res) => { // Get room by id
     try {
         const { id } = req.params;
         const result = await pool.query(`

@@ -29,7 +29,6 @@ const view = new View({
   center: fromLonLat([8.2697343, 47.3558335]),
   zoom: 18,
   maxZoom: 22
-  //extent: []
 })
 
 const map = new Map({
@@ -59,21 +58,21 @@ const map = new Map({
 const imageExtent = [920277.4603228115, 6000131.838362963, 920887.7622205259, 6000567.768289902];
 
 // Defining custom image overlay
-const customImageOverlay1 = new ImageLayer({
+const imageOverlayLevelEG = new ImageLayer({
   source: new ImageStatic({
     url: KSWO_EG,
     imageExtent: imageExtent
   })
 });
 
-const customImageOverlay2 = new ImageLayer({
+const imageOverlayLevelOG = new ImageLayer({
   source: new ImageStatic({
     url: KSWO_OG,
     imageExtent: imageExtent
   })
 });
 
-const customImageOverlay3 = new ImageLayer({
+const imageOverlayLevelUG = new ImageLayer({
   source: new ImageStatic({
     url: KSWO_UG,
     imageExtent: imageExtent
@@ -81,13 +80,13 @@ const customImageOverlay3 = new ImageLayer({
 });
  
 // adding the costum layer ontop of the base map
-map.addLayer(customImageOverlay1);
-map.addLayer(customImageOverlay2);
-map.addLayer(customImageOverlay3);
+map.addLayer(imageOverlayLevelEG);
+map.addLayer(imageOverlayLevelOG);
+map.addLayer(imageOverlayLevelUG);
 
 // setting visibility
-customImageOverlay2.setVisible(false);
-customImageOverlay3.setVisible(false);
+imageOverlayLevelOG.setVisible(false);
+imageOverlayLevelUG.setVisible(false);
 
 
 
@@ -127,7 +126,7 @@ class OverlayControl extends Control {
     });
 
     // Button functions
-    const overlays = [customImageOverlay3, customImageOverlay1, customImageOverlay2];
+    const overlays = [imageOverlayLevelUG, imageOverlayLevelEG, imageOverlayLevelOG];
     const buttons = [levelm1button, level0button, level1button]
 
     this.getVisibleOverlay = () => { // Getting the currently visible Overlay
@@ -294,7 +293,6 @@ class SearchControl extends Control {
         });
     };
 
-    // TODO: Cleanups
     // Function to handle search
     const handleSearch = () => {
       const searchValue = searchInput.value.toUpperCase();
@@ -305,23 +303,9 @@ class SearchControl extends Control {
             if (rooms.length === 1) {
               const room = rooms[0];
               if (room.geom) {
-                const coordinates = JSON.parse(rooms[0].geom).coordinates;
                 const floor = room.floor;
                 if (floor) {
-                  switch (floor) {
-                    case 0:
-                      overlayControl.levelChangeHandler(1);
-                      break;
-                    case 1:
-                      overlayControl.levelChangeHandler(2);
-                      break;
-                    case -1:
-                      overlayControl.levelChangeHandler(0);
-                      break;
-                    default:
-                      alert('Floor not found.');
-                      break;
-                  }
+                  overlayControl.levelChangeHandler(floor + 1);
                 }
                 highlightRoom(room); // Highlicht the room
 
@@ -331,20 +315,7 @@ class SearchControl extends Control {
             } else if (rooms.length > 1) {
               const floor = rooms[0].floor;
               if (floor) {
-                switch (floor) {
-                  case 0:
-                    overlayControl.levelChangeHandler(1);
-                    break;
-                  case 1:
-                    overlayControl.levelChangeHandler(2);
-                    break;
-                  case -1:
-                    overlayControl.levelChangeHandler(0);
-                    break;
-                  default:
-                    alert('Floor not found.');
-                    break;
-                }
+                overlayControl.levelChangeHandler(floor + 1);
               }
               const roomsFiltered = rooms.filter(room => room.floor === floor);
               if (JSON.stringify(roomsFiltered) !== JSON.stringify(rooms)) {
@@ -403,7 +374,6 @@ class SearchControl extends Control {
     searchInput.addEventListener('input', () => {
       clearTimeout(debounceTimer);
       if (searchInput.value.length === 0) {
-        console.log('Search input empty.');
         searchProposalsdiv.style.display = 'none';
         return;
       }

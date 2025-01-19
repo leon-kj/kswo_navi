@@ -18,7 +18,7 @@ router.get('/api/rooms/search/:query', async (req, res) => { // Search proposals
     try {
         const { query } = req.params;
         const result = await pool.query(`
-          SELECT name, type
+          SELECT id, name, type
           FROM rooms 
           WHERE name LIKE $1 OR UPPER(type) LIKE $1
           ORDER BY name`,
@@ -30,6 +30,19 @@ router.get('/api/rooms/search/:query', async (req, res) => { // Search proposals
         res.status(500).send('Server Error');
     }
 });  
+router.get('/api/rooms/:id', async (req, res) => { // Get room by id
+    try {
+        const { id } = req.params;
+        const result = await pool.query(`
+          SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher 
+          FROM rooms 
+          WHERE id = $1`, [id]);
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 router.get('/api/rooms/:name', async (req, res) => { // Get room by name or type
     try {
         const { name } = req.params;

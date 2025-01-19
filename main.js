@@ -266,7 +266,7 @@ class SearchControl extends Control {
               item.addEventListener('click', () => {
                 searchInput.value = proposal.name; // Set search input value
                 searchProposalsdiv.style.display = 'none'; // Hide suggestions
-                handleSearch(proposal.name); // Handle the search
+                idSearch(proposal.id); // Handle the search
               });
               searchProposalsdiv.appendChild(item);
             });
@@ -275,6 +275,19 @@ class SearchControl extends Control {
             console.error('Error fetching search proposals:', error);
           });
       }
+    };
+    const idSearch = (id) => {
+      fetch(`/api/rooms/${id}`)
+        .then(response => response.json())
+        .then(room => {
+          if (room.geom) {
+            const floor = room.floor;
+            if (floor) {
+              overlayControl.levelChangeHandler(floor + 1);
+            }
+          }
+          highlightRoom(room); // Highlight the room
+        });
     };
 
     // TODO: Cleanups
@@ -381,6 +394,7 @@ class SearchControl extends Control {
       searchInput.value = '';
       clearButton.style.display = 'none';
       searchInput.focus(); // Focus on the input field
+      searchProposalsdiv.style.display = 'none'; // Hide search proposals
     });
     
     // Search proposals

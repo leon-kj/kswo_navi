@@ -502,7 +502,7 @@ function highlightRoom(room) {
     roomOverlayType.innerHTML = room.type;
     roomOverlayTeacher.innerHTML = '';
     if (room.teacher) {
-      roomOverlayTeacher.innerHTML = 'Lehrer:';
+      roomOverlayTeacher.innerHTML = 'Lehrpersonen:';
       const roomOverlayTeacherList = document.createElement('ul');
       roomOverlayTeacher.appendChild(roomOverlayTeacherList);
       room.teacher.forEach(element => {

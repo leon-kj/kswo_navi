@@ -285,9 +285,11 @@ class SearchControl extends Control {
         .then(room => {
           if (room.geom) {
             const floor = room.floor;
-            if (floor) {
-              overlayControl.levelChangeHandler(floor + 1);
-            }
+            console.log('Floor:', floor);
+            overlayControl.levelChangeHandler(floor + 1);
+            //if (floor) {
+              //overlayControl.levelChangeHandler(floor + 1);
+            //}
           }
           highlightRoom(room); // Highlight the room
         });
@@ -304,9 +306,7 @@ class SearchControl extends Control {
               const room = rooms[0];
               if (room.geom) {
                 const floor = room.floor;
-                if (floor) {
-                  overlayControl.levelChangeHandler(floor + 1);
-                }
+                overlayControl.levelChangeHandler(floor + 1);
                 highlightRoom(room); // Highlicht the room
 
               } else {
@@ -314,9 +314,7 @@ class SearchControl extends Control {
               }
             } else if (rooms.length > 1) {
               const floor = rooms[0].floor;
-              if (floor) {
-                overlayControl.levelChangeHandler(floor + 1);
-              }
+              overlayControl.levelChangeHandler(floor + 1);
               const roomsFiltered = rooms.filter(room => room.floor === floor);
               if (JSON.stringify(roomsFiltered) !== JSON.stringify(rooms)) {
                 alert('Rooms are on different floors. Showing rooms on Floor ' + floor);

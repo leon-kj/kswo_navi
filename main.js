@@ -38,9 +38,11 @@ const map = new Map({
     new TileLayer({
       source: new XYZ({
         url: 'https://api.maptiler.com/maps/ch-swisstopo-lbm-dark/{z}/{x}/{y}.png?key=nvq0pz6dEivNRJmSl3lD',
-        //url: 'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe.wmts/default/current/3857/{z}/{x}/{y}.png',
         crossOrigin: 'anonymous',
-        attributions: '© <a href="https://www.swisstopo.admin.ch" target="_blank">swisstopo</a>  © MapTiler  © OpenStreetMap contributors'
+        attributions: `
+        © <a href="https://www.swisstopo.admin.ch" target="_blank">swisstopo</a>  
+        © <a href="https://www.maptiler.com/" target="_blank">MapTiler</a>  
+        © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>`
       })
     })
   ],

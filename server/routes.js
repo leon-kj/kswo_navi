@@ -7,7 +7,10 @@ const router = express.Router();
 // Routes
 router.get('/api/rooms', async (req, res) => { // Get all rooms
     try {
-        const result = await pool.query('SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher FROM rooms');
+        const result = await pool.query(`
+          SELECT id, name, floor, ST_AsGeoJSON(geom) AS geom, metadata, type, teacher 
+          FROM rooms
+          `);
         res.json(result.rows);
     } catch (err) {
         console.error(err.message);

@@ -242,7 +242,7 @@ class SearchControl extends Control {
     map.addLayer(roomLayer);
 
     // FUNCTIONS
-    // TODO
+
     // Function for search proposals
     const fetchProposals = () => {
       const searchValue = searchInput.value.toUpperCase();

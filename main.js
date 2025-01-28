@@ -15,9 +15,9 @@ import Stroke from 'ol/style/Stroke';
 import {circular} from 'ol/geom/Polygon';
 import {Control, defaults as defaultControls} from 'ol/control.js';
 import XYZ from 'ol/source/XYZ';
-import KSWO_EG from './images/KSWO 01 KSWO_EG.svg';
-import KSWO_OG from './images/KSWO 02 KSWO_OG.svg';
-import KSWO_UG from './images/KSWO 03 KSWO_UG.svg';
+import KSWO_EG from './images/KSWO 01 KSWO_EG.png';
+import KSWO_OG from './images/KSWO 02 KSWO_OG.png';
+import KSWO_UG from './images/KSWO 03 KSWO_UG.png';
 import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 
 

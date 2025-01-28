@@ -289,9 +289,6 @@ class SearchControl extends Control {
             const floor = room.floor;
             console.log('Floor:', floor);
             overlayControl.levelChangeHandler(floor + 1);
-            //if (floor) {
-              //overlayControl.levelChangeHandler(floor + 1);
-            //}
           }
           highlightRoom(room); // Highlight the room
         });

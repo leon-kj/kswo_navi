@@ -37,7 +37,7 @@ const map = new Map({
   layers: [
     new TileLayer({
       source: new XYZ({
-        url: 'https://api.maptiler.com/maps/ch-swisstopo-lbm-dark/{z}/{x}/{y}.png?key=nvq0pz6dEivNRJmSl3lD',
+        url: `https://api.maptiler.com/maps/ch-swisstopo-lbm-dark/{z}/{x}/{y}.png?key=${import.meta.env.VITE_MAPTILER_API_KEY}`,
         crossOrigin: 'anonymous',
         attributions: `
         © <a href="https://www.swisstopo.admin.ch" target="_blank">swisstopo</a>  

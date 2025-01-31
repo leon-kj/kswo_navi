@@ -144,7 +144,7 @@ class OverlayControl extends Control {
       // Overlay change
       const visibleOverlay = this.getVisibleOverlay();
       if (visibleOverlay !== level) {
-        overlays[visibleOverlay].setVisible(false)
+        overlays[visibleOverlay].setVisible(false);
         overlays[level].setVisible(true);
       }
 
@@ -164,7 +164,7 @@ class OverlayControl extends Control {
     }
 
     // Eventlisteners
-    level1button.addEventListener('click', () => {this.levelChangeHandler(2);});
+    level1button.addEventListener('click', () => {this.levelChangeHandler(2)});
     level0button.addEventListener('click', () => {this.levelChangeHandler(1)});
     levelm1button.addEventListener('click', () => {this.levelChangeHandler(0)});
   }

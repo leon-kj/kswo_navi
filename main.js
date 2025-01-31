@@ -155,7 +155,6 @@ class OverlayControl extends Control {
         } else {
           button.classList.remove('active-button');
         }
-
       });
 
       // Clear highlight and overlay

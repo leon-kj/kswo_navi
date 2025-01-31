@@ -1,4 +1,8 @@
 # KSWO Navi
+[![GitHub Release](https://img.shields.io/github/v/release/leon-kj/kswo_navi?include_prereleases&sort=date&display_name=release&label=Latest%20Release)](https://github.com/leon-kj/kswo_navi/releases)
+[![GitHub License](https://img.shields.io/github/license/leon-kj/kswo_navi?label=License)](https://github.com/leon-kj/kswo_navi/blob/main/LICENSE.md)
+
+
 This repo is a project for my project class at Kantonsschule Wohlen.  
   
 ## Starting the application

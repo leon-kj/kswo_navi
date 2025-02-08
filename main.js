@@ -25,10 +25,30 @@ import maptilerlogo from './images/maptiler-logo-icon-color.svg';
 //
 // BASE MAP
 //
+
+// Map Extent
+const minLon = 8.25;
+const minLat = 47.34;
+const maxLon = 8.29;
+const maxLat = 47.37;
+
+// Convert the bounding box coordinates
+const bottomLeft = fromLonLat([minLon, minLat]);
+const topRight = fromLonLat([maxLon, maxLat]);
+
+const wohlenExtent = [
+  bottomLeft[0], 
+  bottomLeft[1], 
+  topRight[0],   
+  topRight[1]    
+];
+
 const view = new View({
   center: fromLonLat([8.2697343, 47.3558335]),
   zoom: 18,
-  maxZoom: 22
+  maxZoom: 22,
+  minZoom: 16,
+  extent: wohlenExtent,
 })
 
 const map = new Map({

@@ -4,9 +4,25 @@
 
 
 This repo is a project for my project class at Kantonsschule Wohlen.  
-
+  
 ## Installation
-You can find the source Code under releases.  
+You can find and download the source Code under [releases](https://github.com/leon-kj/kswo_navi/releases).  
+
+### Installing dependencies  
+For this project to work, you'll need to have [Node.js](https://nodejs.org/en) and [git](https://github.com/git-guides/install-git) installed.  
+For the database [PostgreSQL](https://www.postgresql.org/) is needed. Make sure to **include PostGIS** in the installer!!  
+For the backend install [Express](https://expressjs.com/) with `npm install express --save` and [cors](https://www.npmjs.com/package/cors) with `npm install cors`.  
+That the Vite will work correctly you'll need to install [mkcert](https://mkcert.org/) with `npm install mkcert`.  
+  
+### Initialize project
+Open the command prompt and run the following command `npm create ol-app kswo_navi`.  
+This will create an [OpenLayers](https://openlayers.org/) project.  
+Open the newly created folder `kswo_navi`. You can now copy everything from the source code into the projectfolder.  
+
+### Setting up the PostgreSQL database
+In pgAdmin 4 you can create a new database named `kswo_navi_rooms`. Right click on the database and choose `restore`.  
+Locate the `data-xxxxx.sql`-file in the source code and import that one. Now simply click on restore and everything should be setup.  
+
   
 ## Starting the application
 Start the VITE frontend server with `npm start` for a dev server. The server should be available under [https://localhost:5173](https://localhost:5173).  

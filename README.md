@@ -4,6 +4,9 @@
 
 
 This repo is a project for my project class at Kantonsschule Wohlen.  
+
+## Installation
+You can find the source Code under releases.  
   
 ## Starting the application
 Start the VITE frontend server with `npm start` for a dev server. The server should be available under [https://localhost:5173](https://localhost:5173).  

@@ -21,7 +21,12 @@ Open the newly created folder `kswo_navi`. You can now copy everything from the 
 
 ### Setting up the PostgreSQL database
 In pgAdmin 4 you can create a new database named `kswo_navi_rooms`. Right click on the database and choose `restore`.  
-Locate the `data-xxxxx.sql`-file in the source code and import that one. Now simply click on restore and everything should be setup.  
+Locate the `data-xxxxx.sql`-file in the source code and import it. Now simply click on restore and everything should be setup.  
+  
+### Setting up variables  
+In the root of the project create a `.env`-file and inlcude the line `VITE_MAPTILEE_API_KEY=<your MapTiler api key>`.
+You can create an account and maps api key at [MapTiler](https://maptiler.com).  
+In the `/server` folder, create a `password.txt` where you need to type in your database password.
 
   
 ## Starting the application
